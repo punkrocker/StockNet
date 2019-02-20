@@ -1,0 +1,15 @@
+ALTER TABLE `stocknet`.`st_goods` 
+  ADD COLUMN   `GoodsType` int(11) NULL DEFAULT 0,
+  ADD COLUMN   `IsBrandGoods` bit(1) NULL DEFAULT b'0',
+  ADD COLUMN   `BrandName` varchar(45)  NULL,
+  ADD COLUMN   `GoodsArea` varchar(45)  NULL,
+  ADD COLUMN   `Mobile` varchar(45)  NULL,
+  ADD COLUMN   `Tel` varchar(45)  NULL,
+  ADD COLUMN   `QQ` varchar(45)  NULL,
+  ADD COLUMN   `Wechat` varchar(150)  NULL,
+  ADD COLUMN   `RealName` varchar(45)  NULL,
+  ADD COLUMN   `Alipay` varchar(150)  NULL,
+  ADD COLUMN   `Addr` varchar(150)  NULL,
+  ADD COLUMN   `Email` varchar(150)  NULL,
+  ADD COLUMN   `Remark` varchar(150)  NULL,
+  ADD COLUMN   `RecommendPic` varchar(550)  NULL;

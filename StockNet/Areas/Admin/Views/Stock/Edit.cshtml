@@ -1,0 +1,121 @@
+﻿@using StockNet.Helpers
+@model StockNet.Areas.Admin.Models.StockEditViewModel
+@{
+    ViewBag.Title = "编辑审核";
+
+    ViewBag.Breadcrumb = new Breadcrumb(new Crumb[] {
+        new Crumb("首页", "/Admin", "fa-dashboard"),
+        new Crumb("库存货源","/Admin/Stock","fa-bar-chart"),
+        new Crumb("编辑审核")
+    });
+}
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <form role="form" method="post" enctype="multipart/form-data" action="~/Admin/Stock/Edit/@Model.Stock.Id">
+                @Html.AntiForgeryToken()
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="name">库存名称：</label>
+                        <input type="text" class="form-control" id="name" name="name" value="@Model.Stock.Name" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="catid">所属父类：</label>
+                        <select class="form-control" id="catid" name="catid">
+                            <option value="0">请选择...</option>
+                            @foreach (var pcat in Model.PCats)
+                            {
+                                <option value="@pcat.Id" @(pcat.Id == Model.Stock.CatId ? "selected" : "")>@Html.GetCatPath(pcat.Path)@pcat.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>库存信息：</label>
+                        <p>
+                            区域：@Model.Stock.GoodsArea 类型：@(Model.Stock.GoodsType == 1 ? "求购" : "出售") <br />
+                            @if (!string.IsNullOrEmpty(Model.Stock.BrandName))
+                            { <span>发布人填写的品牌名：@Model.Stock.BrandName</span><br />}
+                            数量：@Model.Stock.Qty【@Model.Stock.QtyDetail】,价格：@Model.Stock.Price【@Model.Stock.PriceDetail】<br />
+                            <img src="@(!string.IsNullOrEmpty(Model.Stock.MainPic) && Model.Stock.MainPic.StartsWith("~") ? VirtualPathUtility.ToAbsolute(Model.Stock.MainPic) : Model.Stock.MainPic)" style="max-width:240px;" alt="" />
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <label>联系方式：</label>
+                        <p>
+                            @if (!string.IsNullOrEmpty(Model.Stock.RealName))
+                            {<span>姓名:@Model.Stock.RealName</span><br />}
+                            @if (!string.IsNullOrEmpty(Model.Stock.Mobile))
+                            {<span>手机:@Model.Stock.Mobile</span><br />}
+                            @if (!string.IsNullOrEmpty(Model.Stock.Tel))
+                            {<span>电话:@Model.Stock.Tel</span><br />}
+                            @if (!string.IsNullOrEmpty(Model.Stock.QQ))
+                            {<span>QQ:@Model.Stock.QQ</span><br />}
+                            @if (!string.IsNullOrEmpty(Model.Stock.Email))
+                            {<span>邮箱:@Model.Stock.Email</span><br />}
+                            @if (!string.IsNullOrEmpty(Model.Stock.Wechat))
+                            {<span>微信:@Model.Stock.Wechat</span>}
+                            @if (!string.IsNullOrEmpty(Model.Stock.Addr))
+                            {<span>地址:@Model.Stock.Addr</span>}
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <label>是否验证：</label>验证此库存货源信息是否真实准确
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="verifyed" id="checked1" value="0" @(Model.Stock.Status.HasValue && Model.Stock.Status.Value == 1 ? "" : "checked")>
+                                未验证
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="verifyed" id="checked2" value="1" @(Model.Stock.Status.HasValue && Model.Stock.Status.Value == 1 ? "checked" : "")>
+                                已验证
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>是否品牌：</label>验证此库存货源信息是否品牌 @if (!string.IsNullOrEmpty(Model.Stock.BrandName))
+                        { <span>【@Model.Stock.BrandName】</span>}
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="branded" id="branded1" value="0" @(Model.Stock.IsBrandGoods.HasValue && Model.Stock.IsBrandGoods.Value ? "" : "checked")>
+                                不是品牌
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="branded" id="branded2" value="1" @(Model.Stock.IsBrandGoods.HasValue && Model.Stock.IsBrandGoods.Value ? "checked" : "")>
+                                是品牌
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>是否推荐：</label>此货源信息是否显示到首页推荐区
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="recommended" id="recommended1" value="0" @(Model.Stock.Recommended.HasValue && Model.Stock.Recommended.Value ? "" : "checked")>
+                                不是推荐
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="recommended" id="recommended2" value="1" @(Model.Stock.Recommended.HasValue && Model.Stock.Recommended.Value ? "checked" : "")>
+                                是推荐
+                            </label>
+                            <b>推荐图片(600*320)：</b><input type="file" id="RecommendPic" name="RecommendPic" style="display: inline;">
+                            @if (Model.Stock.Recommended==true && !string.IsNullOrEmpty(Model.Stock.RecommendPic))
+                            {
+                                <img src="@(!string.IsNullOrEmpty(Model.Stock.RecommendPic) && Model.Stock.RecommendPic.StartsWith("~") ? VirtualPathUtility.ToAbsolute(Model.Stock.RecommendPic) : Model.Stock.RecommendPic)" style="max-height:320px;" alt="" />
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="reset" class="btn btn-default pull-left">重置</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

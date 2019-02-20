@@ -1,0 +1,198 @@
+﻿@model StockNet.Models.HomeIndexViewModel
+@using StockNet.Helpers;
+@{
+    ViewBag.Title = "首页";
+    ViewBag.Keywords = "中国尾库网,最大库存货源信息平台,批发市场,各地商家";
+    ViewBag.Description = "中国尾库网立志打造中国最大库存货源信息平台,汇聚全国30000余家工厂库存商家信息,汇聚全国各地批发市场;步行街;淘宝商家;全国各乡镇中小型超市卖场等20多万户的客户商家";
+}
+<div class="block clearfix">
+    <div id="pageLeft" class="fl">
+        <h1 class="mod3tit"><span style=" color: #fff">所有分类</span></h1>
+        <div class="mod1 mod2 blank" id="historybox">
+            <span class="lb"></span><span class="rb"></span>
+            <div class="cagegoryCon clearfix">
+                @if (Model.TopLevelCats != null && Model.TopLevelCats.Count > 0)
+                {
+                    foreach (var cat in Model.TopLevelCats)
+                    {
+                        if (cat.Level == 0)
+                        {
+                            <dl>
+                                <dt><a href="/item?cat=@cat.Id">@cat.Name</a></dt>
+                                <dd class="clearfix">
+                                    @foreach (var cat2 in Model.TopLevelCats)
+                                    {
+                                        if (cat2.Level == 1 && cat2.PId == cat.Id)
+                                        {
+                                            <p><a href="/item?cat=@cat2.Id" class="txtdot">@cat2.Name</a></p>
+                                        }
+                                    }
+                                </dd>
+                            </dl>
+                        }
+                    }
+                }
+            </div>
+            <div class="blank"></div>
+        </div>
+        <h1 class="mod3tit">热门货源</h1>
+        <div class="mod1 mod2 blank" id="topbox">
+            <span class="lb"></span><span class="rb"></span>
+            <ul id="top10">
+                @if (Model.HotStocks != null && Model.HotStocks.Count > 0)
+                {
+                    var idx=0;
+                    foreach (var hst in Model.HotStocks)
+                    {
+                        idx++;
+                        <li>
+                            <div class="first">
+                                <div class="fl">
+                                    <font style="color:#F00; font-weight:bold">@(idx).</font> <a href="/item/show/@hst.Id" title="@hst.Name">@Html.GetWords(hst.Name,8)</a>
+                                </div>
+                                <div class="fr"><b class="f1" title="数量：@hst.Qty">@(hst.Price > 0 ? "￥" + hst.Price : hst.PriceDetail ?? "详谈")</b></div>
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+
+        <div class="ads">
+            <table cellpadding="0" cellspacing="0">
+                <tbody>
+                    <tr><td><img src="~/Images/ios.png" width="198" height="198" border="0"></td></tr>
+                    <tr><td>iOS下载</td></>
+                    <tr><td><img src="~/Images/android.png" width="198" height="198" border="0"></td></tr>
+                    <tr><td>Android下载</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="pageRight" class="fr clearfix">
+        <div class="clearfix">
+            <div class="w574 fl">
+                <div class="blank">
+                    <div id="stcarousel" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            @if (Model.RecommendStocks != null && Model.RecommendStocks.Count > 0)
+                            {
+                                var rdx=-1;
+                                foreach (var rst in Model.RecommendStocks)
+                                {
+                                    rdx++;
+                                    <li data-target="#stcarousel" data-slide-to="@rdx" @Html.Raw(rdx==0?"class=\"active\"":"")></li>
+                                }
+                            }
+                            else
+                            {
+                                <li data-target="#stcarousel" data-slide-to="0" class="active"></li>
+                            }
+                        </ol>
+                        <div class="carousel-inner" role="listbox">
+                            @if (Model.RecommendStocks != null && Model.RecommendStocks.Count > 0)
+                            {
+                                var rdx = -1;
+                                foreach (var rst in Model.RecommendStocks)
+                                {
+                                    rdx++;
+                                    var mpic=!string.IsNullOrEmpty(rst.RecommendPic)?rst.RecommendPic:rst.MainPic;
+                                    mpic=!string.IsNullOrEmpty(mpic) && mpic.StartsWith("~") ? VirtualPathUtility.ToAbsolute(mpic) : mpic;
+                                    <div class="item @(rdx==0?"active":"")">
+                                        <a href="~/Item/Show/@rst.Id" title="@rst.Name"><img alt="@rst.Name" src="@mpic" data-holder-rendered="true"></a>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="item active">
+                                    <img alt="" src="~/Images/fpic.png" data-holder-rendered="true">
+                                </div>
+                            }
+                        </div>
+                        @*<a class="left carousel-control" href="#stcarousel" role="button" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            <span class="sr-only">上一个</span>
+                        </a>
+                        <a class="right carousel-control" href="#stcarousel" role="button" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            <span class="sr-only">下一个</span>
+                        </a>*@
+                    </div>
+                </div>
+            </div>
+            <div class="w200 fr">
+                <div class="mod1 blank" id="mod1">
+                    <span class="lt"></span><span class="lb"></span><span class="rt"></span><span class="rb"></span>
+                    <h1 class="mod1tit">网站公告</h1>
+                    <div class="mod1con shop_notice">
+                        <ul>
+                            @if (Model.LatestNotices != null && Model.LatestNotices.Count > 0)
+                            {
+                                foreach (var ln in Model.LatestNotices)
+                                {
+                                    <li>
+                                        <a href="/Home/Notice/@ln.Id" target="_blank" title="@ln.Title">@Html.GetWords(ln.Title,12)</a>
+                                    </li>
+                                }
+                            }                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="blank"></div>
+            <div class=" w200 fr">
+                <div class="ads">
+                    <table cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr><td><a href="/" target="_blank"><img src="/images/topsample.png" width="198" height="140" border="0"></a></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="mod1 blank">
+            <span class="lt"></span><span class="lb"></span><span class="rt"></span><span class="rb"></span>
+
+            <h1 class="mod1tit">
+                最新货源
+                <div class="more clearfix best">
+                    @if (Model.LatestStocksCats != null && Model.LatestStocksCats.Count > 0)
+                    {
+                        var ccount=0;
+                        foreach (var lsc in Model.LatestStocksCats)
+                        {
+                            ccount++;
+                            if(ccount<=8)
+                            { 
+                            <h2 class="h2bg">
+                                <a href="/item?cat=@lsc.Id">@lsc.Name</a> |
+                            </h2>
+                            }
+                        }
+                    }
+                    <h2><a href="/item">更多</a></h2>
+                </div>
+            </h1>
+            <div class="recommendContent entry-content">
+                @if (Model.LatestStocks != null && Model.LatestStocks.Count > 0)
+                {
+                    foreach (var lst in Model.LatestStocks)
+                    {
+                        <div class="goodsbox">
+                            <div class="imgbox"><a href="/item/show/@lst.Id" title="@lst.Name"><img src="@(!string.IsNullOrEmpty(lst.MainPic) && lst.MainPic.StartsWith("~") ? VirtualPathUtility.ToAbsolute(lst.MainPic) : lst.MainPic)" alt=""></a></div>
+                            <a href="/item/show/@lst.Id" title="@lst.Name">@Html.GetWords(lst.Name, 25)</a><br>
+                            @*<font class="goodspice market">￥132元</font>*@
+                            <b class="f1" title="@lst.PriceDetail">价格：@(lst.Price > 0 ? "￥" + lst.Price : lst.PriceDetail ?? "详谈")</b> <b class="f1" title="@lst.QtyDetail">数量：@lst.Qty</b>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>暂无货源</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>

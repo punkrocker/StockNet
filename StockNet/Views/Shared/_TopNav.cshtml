@@ -1,0 +1,51 @@
+﻿<div class="headblcok AllWrap">
+    <div class="headerInfo">
+        <div class="logo" id="logo">            
+                <a href="/"><img src="/Images/logo.png" border="0"></a>            
+        </div>
+        <div class="Landing" style="text-align:right;">
+            <div style="float:left">
+                <font>
+                    中国尾库网 立志打造中国最大库存货源信息平台
+                </font>                
+            </div>
+            @Html.Partial("_LoginPartial")
+        </div>
+
+        @*<div class="guanjianzi" style="display:none">
+            <ul>
+                <li style="color:#fa5889">热门搜索：</li>
+                <li><a href="/item?k=%E5%A5%B3%E9%9E%8B">女鞋</a></li>
+                <li><a href="/item?k=%E9%AB%98%E8%B7%9F%E9%9E%8B">高跟鞋</a></li>
+                <li><a href="/item?k=%E7%94%B7%E9%9E%8B">男鞋</a></li>
+                <li><a href="/item?k=%E9%A3%8E%E8%A1%A3">风衣</a></li>
+                <li><a href="/item?k=%E8%A3%A4%E5%AD%90">裤子</a></li>
+            </ul>
+        </div>*@
+        <div class="Search">
+            <form id="searchForm" name="searchForm" method="get" action="/item">
+                <input name="k" type="text" id="k" placeholder="我要买库存" value="@Request.QueryString["k"]">
+                <input type="submit" value="" id="btsearch">
+            </form>
+        </div>
+        <div class="Nalist">
+                <ul class="MenuList">
+                    <li class="@(Request.Url.AbsolutePath=="/"?"curs":"")" style=" margin-left:8px;"> <span class="l"></span><span class="r"></span><a href="/">首页</a></li>
+                    <li class="@(Request.Url.AbsolutePath.StartsWith("/item", StringComparison.CurrentCultureIgnoreCase) && !Request.Url.AbsolutePath.StartsWith("/item/b", StringComparison.CurrentCultureIgnoreCase) ? "curs" : "")"><a href="/item">库存货源</a></li>
+                    <li class="@(Request.Url.AbsolutePath.StartsWith("/item/buy", StringComparison.CurrentCultureIgnoreCase) ? "curs" : "")"><a href="/item/buy">库存求购</a></li>
+                    <li class="@(Request.Url.AbsolutePath.StartsWith("/item/brand", StringComparison.CurrentCultureIgnoreCase) ? "curs" : "")"><a href="/item/brand">品牌库存</a></li>                    
+                    <li class="@(Request.Url.AbsolutePath.StartsWith("/info/guide",StringComparison.CurrentCultureIgnoreCase) ? "curs" : "")"><a href="/info/guide">服务指南</a></li>
+                    @*<li class="@(Request.Url.AbsolutePath.StartsWith("/info/agent", StringComparison.CurrentCultureIgnoreCase) ? "curs" : "")"><a href="/info/agent">加盟代理</a></li>*@
+                    @*<li class="@(Request.Url.AbsolutePath.StartsWith("/account/register", StringComparison.CurrentCultureIgnoreCase) ? "curs" : "")"><a href="/account/register">注册会员</a></li>*@
+                    <li class="@(Request.Url.AbsolutePath.StartsWith("/manage", StringComparison.CurrentCultureIgnoreCase) ? "curs" : "")"><a href="/manage">会员中心</a></li>
+                    <li class="@(Request.Url.AbsolutePath.StartsWith("/home/noticeb", StringComparison.CurrentCultureIgnoreCase) ? "curs" : "")"><a href="/home/noticeb">曝光台</a></li>
+                    <li class="@(Request.Url.AbsolutePath.StartsWith("/home/contact", StringComparison.CurrentCultureIgnoreCase) ? "curs" : "")"><a href="/home/contact">联系我们</a></li>                    
+                    
+                    
+                </ul>
+        </div>
+        <div class="cartinfo fr"><a></a>
+            <a href="/item/publish">我要卖库存</a>
+        </div>
+    </div>
+</div>

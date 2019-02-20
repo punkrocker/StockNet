@@ -1,0 +1,76 @@
+﻿@using StockNet.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "登录";
+}
+@section curnav{
+<div class="block box">
+    <div id="ur_here">
+        <div class="ur_here blank">
+            当前位置: <a href="/">首页</a> <code>&gt;</code> 用户中心
+        </div>
+    </div>
+</div>
+}
+<div class="reg clearfix" style="width:999px;">
+    <div class="us_login" style=" float:left">
+        <div class="login_tit"><strong style="font-size:14px;">登录</strong> &nbsp;&nbsp;&nbsp;&nbsp;已经注册，请在此登录</div>
+        <div class="mbox" style="width:488px; height:430px;">
+            <div class="title">
+            </div>
+
+            <div class="contentNew">
+                <div class="l_box">
+                    <p style="padding-left: 40px;">已注册用户请从这里登录</p>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <label>
+                            <span>用户名</span>
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "inputBg", size = "25" })
+                            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                        </label>
+                        <label>
+                            <span>密码</span>
+                            @Html.PasswordFor(m => m.Password, new { @class = "inputBg", size = "25" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </label>
+                        <div class="btns">
+                            <input type="submit" value="" class="btn_submit_b">
+                        </div>
+
+                        <div class="tempotherLoginTail"></div>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="us_login" style="float:right;">
+        <div class="reg2_tit" style="width:490px;"><strong style="font-size:14px;">注册</strong> &nbsp;&nbsp;&nbsp;&nbsp; 新用户？ 立即注册，享受多重惊喜。</div>
+        <div class="mbox" style="width:488px; height:430px;">
+            <div class="title">
+
+            </div>
+            <div class="contentNew">
+                <div class="l_box">
+                    <p><strong>如果您不是会员，请注册</strong></p>
+                    <p><strong class="f4">友情提示：</strong></p>
+                    <p>不注册为会员也可在网站上免费发布库存货源信息</p>
+                    <p>但注册之后您可以：</p>
+                    <p>1. 加入VIP，找到精准客源</p>
+                    <p>2. 一年内无限发布库存信息</p>
+                    <p>3. 查看货源信息联系货主</p>
+                    <p>4. 享受会员担保交易</p>
+                    <p><a href="/account/register?ReturnUrl=@ViewBag.ReturnUrl"><img src="/Images/zhuce.gif"></a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

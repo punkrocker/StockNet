@@ -1,0 +1,58 @@
+﻿@model StockNet.Areas.Admin.Models.NoticeEditViewModel
+@{
+    ViewBag.Title = "编辑公告";
+
+    ViewBag.Breadcrumb = new Breadcrumb(new Crumb[] {
+        new Crumb("首页", "/Admin", "fa-dashboard"),
+        new Crumb("公告管理","/Admin/Notice","fa-bell"),
+        new Crumb("编辑公告")
+    });
+}
+@section styles{
+    <link href="~/Scripts/umeditor/themes/default/css/umeditor.min.css" type="text/css" rel="stylesheet">
+}
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <form role="form" method="post" action="~/Admin/Notice/Edit/@Model.Notice.Id">
+                @Html.AntiForgeryToken()
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="title">公告标题：</label>
+                        <input type="text" class="form-control" id="title" maxlength="45" name="title" value="@Model.Notice.Title">
+                    </div>
+                    <div class="form-group">
+                        <label for="title">公告类型：</label>
+                        <p>@(Model.Notice.NoticeType==1?"曝光台":"网站公告")</p>
+                    </div>
+                    <div>
+                        <label>公告内容：</label>
+                        <input type="hidden" id="notice" name="notice" />
+                        <script type="text/plain" id="myEditor" style="width:650px;height:240px;">@Html.Raw(Model.Notice.Notice)</script>
+                    </div>
+                    <div>
+                        <label>公告时间：</label>
+                        <p>@Model.Notice.AddTime</p>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="reset" class="btn btn-default pull-left">重置</button>
+                    <button type="submit" class="btn btn-primary" onclick="return publish();">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script type="text/javascript" charset="utf-8" src="~/Scripts/umeditor/umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="~/Scripts/umeditor/umeditor.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/umeditor/lang/zh-cn/zh-cn.js"></script>
+    <script type="text/javascript">
+        //实例化编辑器
+        var um = UM.getEditor('myEditor');
+        function publish() {
+            $('#notice').val(UM.getEditor('myEditor').getContent());
+            return true;
+        }
+    </script>
+}

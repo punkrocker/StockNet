@@ -1,0 +1,90 @@
+﻿@model StockNet.Models.MemberStockViewModel
+@using StockNet.Helpers;
+@{
+    ViewBag.Title = "我的库存";
+}
+<div class="block clearfix">
+    <div id="articleLeft" class="fl">
+
+        <h1 class="mod2tit" style=" background: red; ">会员中心</h1><div class="mod1 mod2 blank" id="historybox">
+            <span class="lt"></span><span class="lb"></span><span class="rt"></span><span class="rb"></span>
+            @Html.Partial("_MemberLink")
+        </div>
+    </div>
+    <div id="articleRight" class="fr">
+        <div class="ur_here blank">
+            当前位置: <a href="/">首页</a> <code>&gt;</code> <a href="/manage">会员中心</a> <code>&gt;</code> 我的库存
+        </div>
+        <div class="articleBox">
+            <div class="clearfix modContent">
+                    <div class="clearfix grid">
+                        @if (Model.CurPageStocks != null && Model.CurPageStocks.Count > 0)
+                        {
+                            foreach (var cpst in Model.CurPageStocks)
+                            {
+                                <div class="goodsbox @(cpst.Status>0?"":"nopass")">
+                                    <div class="imgbox"><a href="/item/show/@cpst.Id" title="@cpst.Name"><img src="@(!string.IsNullOrEmpty(cpst.MainPic) && cpst.MainPic.StartsWith("~") ? VirtualPathUtility.ToAbsolute(cpst.MainPic) : cpst.MainPic)"></a></div>
+                                    <a href="/item/show/@cpst.Id" title="@cpst.Name">@Html.GetWords(cpst.Name, 25)</a><br>
+                                    <b class="f1" title="@cpst.PriceDetail">价格：@(cpst.Price > 0 ? "￥"+cpst.Price : cpst.PriceDetail??"详谈")</b> <b class="f1" title="@cpst.QtyDetail">数量：@cpst.Qty</b>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p>暂无货源</p>
+                        }
+                    </div>
+                <div class="pagebar">
+                    <div id="pager">
+                        总计 <b>@Model.RecordCount</b>  个货源
+                        @if (Model.CurPageIndex > 1)
+                        {
+                            <a href="@FuncHelpers.GetManageStocksPagedUrl(Model.CurPageIndex - 1)" class="prev">上一页</a>
+                            if (Model.CurPageIndex <= 6)
+                            {
+                                foreach (var i in FuncHelpers.Range(1, Model.CurPageIndex - 1))
+                                {
+                                    <a href="@FuncHelpers.GetManageStocksPagedUrl(i)">@i</a>
+                                }
+                            }
+                            else
+                            {
+                                foreach (var i in FuncHelpers.Range(Model.CurPageIndex - 5, Model.CurPageIndex - 1))
+                                {
+                                    <a href="@FuncHelpers.GetManageStocksPagedUrl(i)">@i</a>
+                                }
+                            }
+                        }
+                        @if (Model.PageTotal > 1) {
+                        <span class="page_now" style="color:red;">@Model.CurPageIndex</span>
+                        }
+                        @if (Model.CurPageIndex < Model.PageTotal)
+                        {
+                            if (Model.CurPageIndex >= 6)
+                            {
+                                foreach (var i in FuncHelpers.Range(Model.CurPageIndex + 1, Model.CurPageIndex + 5))
+                                {
+                                    if (i <= Model.PageTotal)
+                                    {
+                                        <a href="@FuncHelpers.GetManageStocksPagedUrl(i)">@i</a>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                foreach (var i in FuncHelpers.Range(Model.CurPageIndex + 1, 10))
+                                {
+                                    if (i <= Model.PageTotal)
+                                    {
+                                        <a href="@FuncHelpers.GetManageStocksPagedUrl(i)">@i</a>
+                                    }
+                                }
+                            }
+                            <a href="@FuncHelpers.GetManageStocksPagedUrl(Model.CurPageIndex+1)" class="next">下一页</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

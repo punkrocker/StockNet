@@ -1,0 +1,207 @@
+﻿@model StockNet.Models.RegisterViewModel
+@{
+    ViewBag.Title = "注册";
+}
+
+@section curnav{
+    <div class="block box">
+        <div id="ur_here">
+            <div class="ur_here blank">
+                当前位置: <a href="/">首页</a> <code>&gt;</code> 用户中心
+            </div>
+        </div>
+    </div>
+}
+<div class="block box">
+    <div class="regTop"><strong style="font-size:14px;">注册</strong> &nbsp;&nbsp;&nbsp;&nbsp; 新用户？ 立即注册，享受多重惊喜 。马上加入我们惊喜多多，好运连连。</div>
+    <div class="usBox">
+        <div class="usBox_2 clearfix">
+
+            <div class="blank1" style="margin-top:15px;">@Html.ValidationSummary()</div>
+            @using (Html.BeginForm("Register", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <table width="100%" border="0" align="left" cellpadding="5" cellspacing="3">
+                    <tbody>
+                        <tr>
+                            <td width="30%" align="right">用户名</td>
+                            <td width="70%">
+                                @Html.TextBoxFor(m => m.UserName, new { @class = "inputBg",size="25" })
+                                <span id="username_notice" style="color:#FF0000"> *</span>
+                            </td>
+                        </tr>                        
+                        <tr>
+                            <td align="right">密码</td>
+                            <td>
+                                @Html.PasswordFor(m => m.Password, new { @class = "inputBg",onkeyup="checkIntensity(this.value)", style="width:179px;" })
+                                <span style="color:#FF0000" id="password_notice"> *</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">密码强度</td>
+                            <td>
+                                <table width="145" border="0" cellspacing="0" cellpadding="1">
+                                    <tbody>
+                                        <tr align="center">
+                                            <td width="33%" id="pwd_lower">弱</td>
+                                            <td width="33%" id="pwd_middle">中</td>
+                                            <td width="33%" id="pwd_high">强</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">确认密码</td>
+                            <td>
+                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "inputBg", style="width:179px;" })
+                                <span style="color:#FF0000" id="conform_password_notice"> *</span>
+                            </td>
+                        </tr>                        
+                        <tr>
+                            <td align="right">姓名</td>
+                            <td>
+                                @Html.TextBoxFor(m => m.RealName, new { @class = "inputBg", size = "25" })
+                                <span style="color:#FF0000"> *</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">手机</td>
+                            <td>
+                                @Html.TextBoxFor(m => m.Mobile, new { @class = "inputBg", size = "25" })  
+                                <span style="color:#FF0000"> *</span>                              
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">电话</td>
+                            <td>
+                                @Html.TextBoxFor(m => m.Tel, new { @class = "inputBg", size = "25" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">QQ</td>
+                            <td>
+                                @Html.TextBoxFor(m => m.QQ, new { @class = "inputBg", size = "25" })                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">微信</td>
+                            <td>
+                                @Html.TextBoxFor(m => m.Wechat, new { @class = "inputBg", size = "25" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">电子邮件</td>
+                            <td>
+                                @Html.TextBoxFor(m => m.Email, new { @class = "inputBg", size = "25" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">地址</td>
+                            <td>
+                                @Html.TextBoxFor(m => m.Addr, new { @class = "inputBg", size = "25" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">其它</td>
+                            <td>
+                                @Html.TextBoxFor(m => m.Other, new { @class = "inputBg", size = "25" })
+                            </td>
+                        </tr>
+                        <tr style="">
+                            <td>&nbsp;</td>
+                            <td>
+                                <label>
+                                    <input name="agreement" type="checkbox" value="1" checked="checked">
+                                    我已看过并接受《<a href="/home/terms" style="color:blue" target="_blank">用户协议</a>》
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td align="left">
+                                <div class="btns">
+                                    <input class="btn_submit" name="Submit" type="submit" value="">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr style=" display: none">
+                            <td colspan="2">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td class="actionSub">
+                                <a href="/account/login">我已有账号，我要登录</a><br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    function checkIntensity(pwd) {
+        var Mcolor = "#FFF", Lcolor = "#FFF", Hcolor = "#FFF";
+        var m = 0;
+
+        var Modes = 0;
+        for (i = 0; i < pwd.length; i++) {
+            var charType = 0;
+            var t = pwd.charCodeAt(i);
+            if (t >= 48 && t <= 57) {
+                charType = 1;
+            }
+            else if (t >= 65 && t <= 90) {
+                charType = 2;
+            }
+            else if (t >= 97 && t <= 122)
+                charType = 4;
+            else
+                charType = 4;
+            Modes |= charType;
+        }
+
+        for (i = 0; i < 4; i++) {
+            if (Modes & 1) m++;
+            Modes >>>= 1;
+        }
+
+        if (pwd.length <= 4) {
+            m = 1;
+        }
+
+        switch (m) {
+            case 1:
+                Lcolor = "2px solid red";
+                Mcolor = Hcolor = "2px solid #DADADA";
+                break;
+            case 2:
+                Mcolor = "2px solid #f90";
+                Lcolor = Hcolor = "2px solid #DADADA";
+                break;
+            case 3:
+                Hcolor = "2px solid #3c0";
+                Lcolor = Mcolor = "2px solid #DADADA";
+                break;
+            case 4:
+                Hcolor = "2px solid #3c0";
+                Lcolor = Mcolor = "2px solid #DADADA";
+                break;
+            default:
+                Hcolor = Mcolor = Lcolor = "";
+                break;
+        }
+        if (document.getElementById("pwd_lower")) {
+            document.getElementById("pwd_lower").style.borderBottom = Lcolor;
+            document.getElementById("pwd_middle").style.borderBottom = Mcolor;
+            document.getElementById("pwd_high").style.borderBottom = Hcolor;
+        }
+
+
+    }
+</script>
+}

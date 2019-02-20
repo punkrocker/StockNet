@@ -1,0 +1,44 @@
+﻿.main-header .logo{
+    height: 40px;
+    line-height: 40px;
+}
+.main-header .logo:hover{
+    text-decoration:none;
+}
+.main-header>.navbar{
+    min-height:40px;
+}
+.main-header .sidebar-toggle
+{
+    padding:10px 15px;
+}
+
+.navbar-custom-menu .navbar-nav>li>a {
+padding-top: 10px;
+padding-bottom: 10px;
+}
+
+.validation-summary-valid.alert-danger {
+    display: none;
+}
+
+.navbar-nav>.user-menu>.dropdown-menu>.user-body
+{
+    padding:15px 10px;
+}
+.margin {
+  margin: 0 10px 10px;
+}
+
+.pad {
+  padding: 0 5px 5px;
+}
+
+
+
+.main-footer{
+    padding:5px;
+    font-size: 12px;
+}
+
+

@@ -1,0 +1,43 @@
+﻿@model StockNet.Models.MemberIndexViewModel
+@{
+    ViewBag.Title = "会员中心";
+}
+<div class="block clearfix">
+    <div id="articleLeft" class="fl">
+
+        <h1 class="mod2tit" style=" background: red; ">会员中心</h1><div class="mod1 mod2 blank" id="historybox">
+            <span class="lt"></span><span class="lb"></span><span class="rt"></span><span class="rb"></span>
+            @Html.Partial("_MemberLink")
+        </div>
+    </div>
+    <div id="articleRight" class="fr">
+        <div class="ur_here blank">
+            当前位置: <a href="/">首页</a> <code>&gt;</code> 会员中心
+        </div>	 
+        <div class="articleBox">
+            <h1 class="articleTit tc">会员中心</h1>
+            <div class="author">
+                <p>当前会员级别：<b>@Model.Level</b></p>
+                @Html.Raw(StockNet.Service.SettingService.GetSettingContent("st_member"))
+                @*<p><b>加入VIP会员后：</b></p>
+                <p>1. 加入VIP，为您找到精准客源</p>
+                <p>2. 一年内无限发布库存信息</p>
+                <p>3. 查看货源信息联系货主</p>
+                <p>4. 享受会员担保交易，服务费1%</p>
+                <p><b>加入方法：</b></p>
+                <p>1.VIP会员，800元/年(服务一年)</p>
+                <p>2.地区城市代理，2980元/年</p>
+                <p>3.县市级分代理，1280元/年</p>
+                <p>4.联系电话：15372387977（刘）或13736803651（王）<br />
+                 QQ：168481511/2321234369 微信:15372387977/cookie3663 <br />
+                 E-mail:168481511@qq.com</p>
+                <p><b>付款方式：</b><br />支付宝：2321234369@qq.com<br />
+              中国工商银行：6212261204003378905<br />
+                中国农业银行：6228480348628446877<br />
+                中信银行：6226900820801302</p>*@
+            </div>
+            <div style="border-top: #efefef solid 1px;">
+            </div>            
+        </div>
+    </div>
+</div>

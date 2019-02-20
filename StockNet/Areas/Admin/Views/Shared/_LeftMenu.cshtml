@@ -1,0 +1,65 @@
+﻿@using StockNet.Helpers
+@{
+    Layout = null;
+}
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <!-- Sidebar user panel -->
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img src="@(IdentityHelper.GetSex(User.Identity) ? "/Content/AdminLTE/img/avatar3.png" : "/Content/AdminLTE/img/avatar5.png")" class="img-circle" alt="User Image" />
+            </div>
+            <div class="pull-left info">
+                <p>@IdentityHelper.GetDisplayName(User.Identity)</p>
+                <p>@IdentityHelper.GetRoleName(User.Identity)</p>
+            </div>
+        </div>
+        <!-- search form -->
+        <form action="/Admin/Stock/Index" method="get" class="sidebar-form">
+            <div class="input-group">
+                <input type="text" name="q" value="@Request["q"]" class="form-control" placeholder="搜索库存货源..." />
+                <span class="input-group-btn">
+                    <button type='submit' class="btn btn-flat"><i class="fa fa-search"></i></button>
+                </span>
+            </div>
+        </form>
+        <!-- /.search form -->
+        <ul class="sidebar-menu">
+            @*<li class="header">功能导航</li>*@
+            <li class ="@Html.IsActive("Dash")">
+                <a href="~/Admin/Dash"><i class="fa fa-dashboard"></i> <span>控制面板</span> <small class="label pull-right bg-green">new</small></a>
+            </li>
+            <li class="@Html.IsActive("Member")">
+                <a href="~/Admin/Member"><i class="fa fa-user-secret"></i> <span>会员管理</span></a>
+            </li>
+
+            <li class="treeview @Html.IsActive("Stock")">
+                <a href="#">
+                    <i class="fa fa-bar-chart"></i> <span>库存管理</span> <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="@Html.IsActive("Stock",true)"><a href="~/Admin/Stock"><i class="fa fa-circle-o"></i> 库存货源</a></li>
+                    <li class="@Html.IsActive("Stock/Cat")"><a href="~/Admin/Stock/Cat"><i class="fa fa-circle-o"></i> 库存分类</a></li>
+                </ul>
+            </li>
+            <li class="@Html.IsActive("Notice")">
+                <a href="~/Admin/Notice"><i class="fa fa-bell"></i> <span>公告管理</span></a>
+            </li>
+            
+            <li class="treeview @Html.IsActive("User,Role")">
+                <a href="#">
+                    <i class="fa fa-user"></i> <span>用户管理</span> <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="@Html.IsActive("User")"><a href="~/Admin/User"><i class="fa fa-circle-o"></i> 用户管理</a></li>
+                    <li class="@Html.IsActive("Role")"><a href="~/Admin/Role"><i class="fa fa-circle-o"></i> 角色管理</a></li>
+                </ul>
+            </li>
+            <li class="@Html.IsActive("Setting")">
+                <a href="~/Admin/Setting"><i class="fa fa-cog"></i> <span>系统设置</span></a>
+            </li>
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>

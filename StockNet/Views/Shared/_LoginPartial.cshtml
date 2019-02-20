@@ -1,0 +1,38 @@
+﻿@using StockNet.Helpers
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+    @Html.AntiForgeryToken()
+    <div>
+        @if (User.IsInRole("0"))
+        {
+        @Html.ActionLink("你好，" + IdentityHelper.GetDisplayName(User.Identity) + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "会员中心" })
+        }else{
+        @Html.ActionLink("你好，" + IdentityHelper.GetDisplayName(User.Identity) + "!", "Index", "Dash", routeValues: new { area = "Admin" }, htmlAttributes: new { title = "管理中心" })
+        }
+        |
+        <a href="javascript:document.getElementById('logoutForm').submit()">退出登录</a>
+        |
+        <a href="/home/contact">联系我们</a>
+        |
+        <a href="/home/about">关于我们</a>
+        |
+        <a href="/home/disclaimer">免责声明</a>
+    </div>
+    }
+}
+else
+{
+    <div>
+        <a href="/account/login">会员登录</a>
+        |
+        <a href="/account/register">免费注册</a>
+        |
+        <a href="/home/contact">联系我们</a>
+        |
+        <a href="/home/about">关于我们</a>
+        |
+        <a href="/home/disclaimer">免责声明</a>
+    </div>    
+}

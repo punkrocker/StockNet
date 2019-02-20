@@ -1,0 +1,122 @@
+﻿@model StockNet.Areas.Admin.Models.RoleIndexViewModel
+@{
+    ViewBag.Title = "角色管理";
+
+    ViewBag.Breadcrumb = new Breadcrumb(new Crumb[] {
+        new Crumb("首页", "/Admin", "fa-dashboard"),
+        new Crumb("角色管理")
+    });
+}
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">角色</h3>
+                <div class="box-tools pull-right">
+                    <a class="btn btn-primary fs-add" href="~/Admin/Role/Add">添加角色</a>
+                </div>
+            </div>
+            <div class="box-body">
+                <table id="tbl_data" class="table table-bordered table-striped  table-hover">
+                    <thead>
+                        <tr>
+                            <th>角色名</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Roles != null && Model.Roles.Count > 0)
+                        {
+                            foreach (var r in Model.Roles)
+                            {
+                                <tr>
+                                    <td>@r.Name</td>
+                                    <td>
+                                        <a href="~/Admin/Role/Edit/@r.Id" class="fs-edit" data-id="@r.Id"><i class="fa fa-edit"></i>编辑</a>
+                                        <a href="#" class="fs-del" data-id="@r.Id"><i class="fa fa-remove"></i>删除</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+                <form id="__AjaxAntiForgeryForm" action="#" method="post">
+                    @Html.AntiForgeryToken()
+                </form>                
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+    var tbl;
+    $(function () {
+        tbl = $("#tbl_data").dataTable({
+                //bPaginate: false,
+                //sDom: "<'row'<'col-xs-6 tbl_tool'><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
+                aoColumns: [null, { bSortable: false, bSearchable: false }],                
+                oLanguage: {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+                }
+            });
+
+            //$("div.tbl_tool").html('<button class="btn btn-primary fs-add" data-toggle="modal" data-target="#fs-adddlg">添加角色</button>');
+
+            //$("#fs-addfrm").submit(function () {
+            //    var self = $(this);
+            //    var data = self.serialize();
+            //    $.post(self.attr("action"),
+            //        data, function (res) {
+            //            if (res == "ok") {
+            //                self.parents(".modal").modal("hide");
+            //                window.location.reload();
+            //            } else {
+            //                alert(res);
+            //            }
+            //        });
+            //    return false;
+            //});
+
+            //$("a.fs-edit").click(function () {
+            //    var id = $(this).data("id");
+            //    $("#fs-adddlg").modal();
+            //});
+
+            $("a.fs-del").click(function () {
+                if (confirm("确定要删除此角色么？")) {
+                    //tbl.row($(this).parents("tr")).remove().draw();
+                    var id = $(this).data("id");
+                    $.post("/Admin/Role/Del", { id: id, __RequestVerificationToken: $('#__AjaxAntiForgeryForm input[name="__RequestVerificationToken"]').val() },
+                    function (res) {
+                        if (res == "ok") {
+                            window.location.reload();
+                        } else {
+                            alert(res);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

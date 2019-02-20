@@ -1,0 +1,392 @@
+﻿@model StockNet.Models.ItemPublishViewModel
+@using StockNet.Helpers
+@{
+    ViewBag.Title = "我要卖库存";
+}
+@section styles{
+<link href="~/Scripts/umeditor/themes/default/css/umeditor.min.css" type="text/css" rel="stylesheet">
+<link rel="stylesheet" href="~/Content/jQuery.FileUpload/css/jquery.fileupload.css" />
+<link rel="stylesheet" href="~/Content/pub.css" />
+}
+@section curnav{
+    <div class="block box">
+        <div id="ur_here">
+            <div class="ur_here blank">
+                当前位置: <a href="/">首页</a> <code>&gt;</code> 我要卖库存
+            </div>
+        </div>
+    </div>
+}
+<div class="block box">
+    <div class="regTop"><strong style="font-size:14px;">友情提示</strong> &nbsp;&nbsp;&nbsp;&nbsp; 本网站发布的库存货源价格必须低于成本价格，不接收常规价格商品，敬请配合</div>
+    <div class="usBox pubox">
+        <div class="usBox_2 clearfix">
+            <div class="blank1" style="margin-top:15px;">@Html.ValidationSummary()</div>
+            @using (Html.BeginForm("Publish", "Item", FormMethod.Post, new {enctype="multipart/form-data", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <table width="100%" border="0" align="left" cellpadding="5" cellspacing="3">
+                    <tbody>
+                        <tr>
+                            <td width="20%" align="right">标题<b>*</b></td>
+                            <td width="80%">
+                                @Html.TextBoxFor(m => m.Name, new { @class = "inputBg", autocomplete = "off", size = "34" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">类型<b>*</b></td>
+                            <td>
+                                <label>
+                                    <input type="radio" name="GoodsType" id="GoodsType1" value="0" @(ViewBag.IsVip||ViewBag.IsAdmin?"checked":"disabled")>
+                                    库存出售
+                                </label>
+                                <label>
+                                    <input type="radio" name="GoodsType" id="GoodsType2" value="1" @(ViewBag.IsVip || ViewBag.IsAdmin ? "" : "checked")>
+                                    库存求购
+                                </label>
+                                @Html.Raw(ViewBag.IsVip || ViewBag.IsAdmin ? "" : "<b>提示：VIP会员才能发布库存出售信息!</b>")
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">分类<b>*</b></td>
+                            <td>
+                                <select class="inputBg" id="CatId" name="CatId" style="width: 215px;">
+                                    <option value="0">请选择分类...</option>
+                                    @foreach (var pcat in ViewBag.PCats)
+                                    {
+                                        <option value="@pcat.Id">@(StockNet.Helpers.MyHtmlHelper.GetCatPath(this.Html,pcat.Path))@pcat.Name</option>
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">区域</td>
+                            <td>
+                                <div class="shengfen">
+                                    <span id="sfarea">请选择</span><i class="fa fa-angle-down"></i>
+                                    <ul class="shengfen_frame" style="display: none;">
+                                        <h3>请选择您想要切换到的城市/省份: </h3>
+                                        <li>
+                                            <span>A-G</span>
+                                            <p>
+                                                <a id="bj" href="#" title="北京">
+                                                    北京
+                                                </a>
+
+                                                <a id="ah" href="#" title="安徽">
+                                                    安徽
+                                                </a>
+
+                                                <a id="cq" href="#" title="重庆">
+                                                    重庆
+                                                </a>
+
+                                                <a id="fj" href="#" title="福建">
+                                                    福建
+                                                </a>
+
+                                                <a id="gd" href="#" title="广东">
+                                                    广东
+                                                </a>
+
+                                                <a id="gs" href="#" title="甘肃">
+                                                    甘肃
+                                                </a>
+
+                                                <a id="gx" href="#" title="广西">
+                                                    广西
+                                                </a>
+
+                                                <a id="gz" href="#" title="贵州">
+                                                    贵州
+                                                </a>
+
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <span>H-J</span>
+                                            <p>
+                                                <a id="hb" href="#" title="湖北">
+                                                    湖北
+                                                </a>
+
+                                                <a id="hn" href="#" title="湖南">
+                                                    湖南
+                                                </a>
+
+                                                <a id="he" href="#" title="河北">
+                                                    河北
+                                                </a>
+
+                                                <a id="ha" href="#" title="河南">
+                                                    河南
+                                                </a>
+
+                                                <a id="hi" href="#" title="海南">
+                                                    海南
+                                                </a>
+
+                                                <a id="hl" href="#" title="黑龙江">
+                                                    黑龙江
+                                                </a>
+
+                                                <a id="js" href="#" title="江苏">
+                                                    江苏
+                                                </a>
+
+                                                <a id="jl" href="#" title="吉林">
+                                                    吉林
+                                                </a>
+
+                                                <a id="jx" href="#" title="江西">
+                                                    江西
+                                                </a>
+
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <span>L-S</span>
+                                            <p>
+                                                <a id="ln" href="#" title="辽宁">
+                                                    辽宁
+                                                </a>
+
+                                                <a id="nm" href="#" title="内蒙古">
+                                                    内蒙古
+                                                </a>
+
+                                                <a id="nx" href="#" title="宁夏">
+                                                    宁夏
+                                                </a>
+
+                                                <a id="qh" href="#" title="青海">
+                                                    青海
+                                                </a>
+
+                                                <a id="sd" href="#" title="山东">
+                                                    山东
+                                                </a>
+
+                                                <a id="sh" href="#" title="上海">
+                                                    上海
+                                                </a>
+
+                                                <a id="sx" href="#" title="山西">
+                                                    山西
+                                                </a>
+
+                                                <a id="sn" href="#" title="陕西">
+                                                    陕西
+                                                </a>
+
+                                                <a id="sc" href="#" title="四川">
+                                                    四川
+                                                </a>
+
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <span>T-Z</span>
+                                            <p id="noborder">
+                                                <a id="tj" href="#" title="天津">
+                                                    天津
+                                                </a>
+
+                                                <a id="xj" href="#" title="新疆">
+                                                    新疆
+                                                </a>
+
+                                                <a id="xz" href="#" title="西藏">
+                                                    西藏
+                                                </a>
+
+                                                <a id="yn" href="#" title="云南">
+                                                    云南
+                                                </a>
+
+                                                <a id="zj" href="#" title="浙江">
+                                                    浙江
+                                                </a>
+
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <input type="hidden" id="GoodsArea" name="GoodsArea" />
+                                <label>品牌：</label>@Html.TextBoxFor(m => m.BrandName, new { @class = "inputBg", autocomplete = "off", size = "15" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">价格</td>
+                            <td>
+                                ￥@Html.TextBoxFor(m => m.Price, new { @class = "inputBg", autocomplete = "off", size = "8" }) 
+                                描述：@Html.TextBoxFor(m => m.PriceDetail, new { @class = "inputBg", autocomplete = "off", size = "15" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">数量<b>*</b></td>
+                            <td>
+                                @Html.TextBoxFor(m => m.Qty, new { @class = "inputBg", autocomplete = "off", size = "10" })
+                                描述：@Html.TextBoxFor(m => m.QtyDetail, new { @class = "inputBg", autocomplete = "off", size = "15" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">主图</td>
+                            <td>
+                                <input type="file"  id="MainPic" name="MainPic">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">其它图片</td>
+                            <td>
+                                <span class="btn btn-success fileinput-button">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    <span>上传图片...</span>
+                                    <input id="fileupload" type="file" name="files[]" multiple>
+                                </span><span>可多选</span>
+                                <div id="progress" class="progress" style="margin: 5px 0;">
+                                    <div class="progress-bar progress-bar-success"></div>
+                                </div>
+                                <div id="pics">
+                                </div>
+                                @Html.HiddenFor(m => m.OPics, new { })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">详细说明<b>*</b></td>
+                            <td>
+                                <script type="text/plain" id="myEditor" style="width:650px;height:240px;"></script>
+
+                                @Html.HiddenFor(m => m.Details, new { })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">联系方式</td>
+                            <td>
+                                <table class="tblcontact">
+                                    <tr><td colspan="3">请填写货主或买主的联系方式：<a href="#" id="clscontact" title="清空联系方式，重新填写">清空联系方式</a></td></tr>
+                                    <tr><td><label>姓名<b>*</b></label><input class="inputBg" id="RealName"  name="RealName" type="text" value="@(ViewBag.Member!=null?ViewBag.Member.RealName:"")" /></td>
+                                    <td><label>手机<b>*</b></label><input class="inputBg" id="Mobile"  name="Mobile" type="text" value="@(ViewBag.Member != null ? ViewBag.Member.Mobile : "")" /></td>
+                                    <td><label>固话</label><input class="inputBg" id="Tel" name="Tel"  type="text" value="@(ViewBag.Member != null ? ViewBag.Member.Tel : "")" /></td></tr>
+                                    <tr><td><label>QQ</label><input class="inputBg" id="QQ"  name="QQ" type="text" value="@(ViewBag.Member!=null?ViewBag.Member.QQ:"")" /></td>
+                                    <td><label>微信</label><input class="inputBg" id="Wechat"  name="Wechat" type="text" value="@(ViewBag.Member != null ? ViewBag.Member.Wechat : "")" /></td>
+                                    <td><label>邮件</label><input class="inputBg" data-val="true"  data-val-email="电子邮件 字段不是有效的电子邮件地址。" id="Email" name="Email" type="text" value="@(ViewBag.Member != null ? ViewBag.Member.Email : "")" /></td></tr>
+                                    <tr><td colspan="3"><label>地址</label> <input class="inputBg"  id="Addr" size="50" name="Addr" type="text" value="@(ViewBag.Member != null ? ViewBag.Member.Addr : "")" /></td></tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td align="left">
+                                <div class="btns">
+                                    <input type="submit" onclick="return publish();" value="发布库存" class="btn btn-primary">
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script type="text/javascript" charset="utf-8" src="~/Scripts/umeditor/umeditor.front.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="~/Scripts/umeditor/umeditor.min.js"></script>
+<script type="text/javascript" src="~/Scripts/umeditor/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript" src="~/Scripts/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="~/Scripts/jQuery.FileUpload/jquery.fileupload.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //实例化编辑器
+        var um = UM.getEditor('myEditor');
+        var pics = $('#pics').empty();
+        $('#fileupload').fileupload({
+            url: "/Item/PicUpload",
+            dataType: 'json',
+            done: function (e, data) {
+                if (data.result != null) {                    
+                    $.each(data.result, function (index, file) {
+                        $('<div><img alt="" src="'+file.url+'" data-id="'+file.ppid+'"/><i title="删除">X</i></div>').appendTo(pics);
+                    });
+                    $("#pics i").off('click').on('click', function () { $(this).parent().remove();});
+                }
+            },
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#progress .progress-bar').css(
+                    'width',
+                    progress + '%'
+                );
+            }
+        });
+        var $sframe=$(".shengfen_frame");
+        $('.shengfen').hover(function () {
+            $sframe.show();
+        }, function () {
+            $sframe.hide();
+        });
+        $('.shengfen_frame p a').click(function () {
+            var area =$.trim($(this).text());
+            $('#sfarea').text(area);
+            $('#GoodsArea').val(area);
+            $sframe.hide();
+            return false;
+        });
+        $('#clscontact').click(function () {
+            $('.tblcontact td input').val("");
+            return false;
+        });
+    });
+    
+    function publish()
+    {
+        if ($('#Name').val() == "") {
+            alert('请填写标题！');
+            return false;
+        }
+        var price = $('#Price').val();
+        if (price != "") {
+            var tp = parseFloat(price);
+            if (isNaN(tp)) {
+                alert('价格必须是数字！');
+                return false;
+            }
+            $('#Price').val(tp);
+        }
+        var tq = parseInt($('#Qty').val());
+        if (isNaN(tq)) {
+            alert('数量必须是数字！');
+            return false;
+        }
+        $('#Qty').val(tq);
+        if ($('#CatId').val() == "0") {
+            alert('请选择分类！');
+            return false;
+        }
+        //if ($('#GoodsArea').val() == "") {
+        //    alert('请选择区域！');
+        //    return false;
+        //}
+        
+        if ($('#RealName').val() == "") {
+            alert('请填写姓名！');
+            return false;
+        }
+        if ($('#Mobile').val() == "") {
+            alert('请填写手机！');
+            return false;
+        }
+        
+        $('#Details').val(UM.getEditor('myEditor').getContent());
+        if ($('#Details').val() == "") {
+            alert('请填写详细说明！');
+            return false;
+        }
+        var ids = "";
+        $("#pics img").each(function (idx, elem) { ids += $(elem).data("id") + ","; });
+        $("#OPics").val(ids);
+
+        return true;
+    }
+</script>
+}

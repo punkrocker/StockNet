@@ -1,0 +1,40 @@
+﻿@using StockNet.Helpers
+@model StockNet.Areas.Admin.Models.StockCatAddEditViewModel
+@{
+    ViewBag.Title = "编辑库存分类";
+
+    ViewBag.Breadcrumb = new Breadcrumb(new Crumb[] {
+        new Crumb("首页", "/Admin", "fa-dashboard"),
+        new Crumb("库存分类","/Admin/Stock/Cat","fa-book"),
+        new Crumb("编辑库存分类")
+    });
+}
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <form role="form" method="post" action="~/Admin/Stock/CatEdit/@Model.Cat.Id">
+                @Html.AntiForgeryToken()
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="name">分类名：</label>
+                        <input type="text" class="form-control" id="name" name="name" value="@Model.Cat.Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">所属父类：</label>
+                        <select class="form-control" id="pid" name="pid">
+                            <option value="0">请选择...</option>
+                            @foreach (var pcat in Model.PCats)
+                            {
+                                <option value="@pcat.Id" @(pcat.Id == Model.Cat.PId ? "selected" : "")>@Html.GetCatPath(pcat.Path)@pcat.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="reset" class="btn btn-default pull-left">重置</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

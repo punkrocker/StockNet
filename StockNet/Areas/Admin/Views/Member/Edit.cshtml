@@ -1,0 +1,85 @@
+﻿@model StockNet.Areas.Admin.Models.MemberEditViewModel
+@{
+    ViewBag.Title = "编辑审核";
+
+    ViewBag.Breadcrumb = new Breadcrumb(new Crumb[] {
+        new Crumb("首页", "/Admin", "fa-dashboard"),
+        new Crumb("会员管理","/Admin/Member","fa-user-secret"),
+        new Crumb("编辑审核")
+    });
+}
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <form role="form" method="post" action="~/Admin/Member/Edit/@Model.Member.Id">
+                @Html.AntiForgeryToken()
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="username">会员名：</label>
+                        <input type="text" class="form-control" id="username" name="username" value="@Model.Member.RealName" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="rolename">会员联系方式：</label>
+                        <p>@if(!string.IsNullOrEmpty(Model.Member.Mobile))
+                           {<span>手机:@Model.Member.Mobile</span>}
+                          @if (!string.IsNullOrEmpty(Model.Member.Tel))
+                          {<span>电话:@Model.Member.Tel</span>}
+                          @if (!string.IsNullOrEmpty(Model.Member.QQ))
+                          {<span>QQ:@Model.Member.QQ</span>}
+                          @if (!string.IsNullOrEmpty(Model.Member.Email))
+                          {<span>邮箱:@Model.Member.Email</span>}
+                          @if (!string.IsNullOrEmpty(Model.Member.Wechat))
+                          {<span>微信:@Model.Member.Wechat</span>}
+                        </p>                                                                                                                                                                                      </p>
+                    </div>
+                    <div class="form-group">
+                        <label for="level">会员级别：</label>请保证缴费后修改级别
+                        <select class="form-control" id="level" name="level">
+                            <option value="普通会员" @("普通会员" == Model.Member.Level ? "selected" : "")>普通会员</option>
+                            <option value="VIP会员" @("VIP会员" == Model.Member.Level && Model.Member.VipOverDate>DateTime.Now ? "selected" : "")>VIP会员</option>
+                            <option value="地区代理" @("地区代理" == Model.Member.Level && Model.Member.VipOverDate > DateTime.Now ? "selected" : "")>地区代理</option>
+                        </select>
+                        @if ("普通会员" != Model.Member.Level && Model.Member.VipOverDate.HasValue)
+                        {
+                            <p>过期日期：@Model.Member.VipOverDate.Value.ToString("yyyy年MM月dd日")</p>
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label>是否验证：</label>验证此会员信息是否真实准确
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="verifyed" id="checked1" value="0" @(Model.Member.HadVerify.HasValue && Model.Member.HadVerify.Value ? "" : "checked")>
+                                未验证
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="verifyed" id="checked2" value="1" @(Model.Member.HadVerify.HasValue && Model.Member.HadVerify.Value ? "checked" : "")>
+                                已验证
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>是否锁定：</label>此会员是否已锁定，锁定将无法登陆
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="userlock" id="userlock1" value="0" @(Model.User != null && Model.User.Status.HasValue && Model.User.Status.Value > 5 ? "" : "checked")>
+                                未锁定
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="userlock" id="userlock2" value="1" @(Model.User != null && Model.User.Status.HasValue && Model.User.Status.Value>5 ? "checked" : "")>
+                                已锁定
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="reset" class="btn btn-default pull-left">重置</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

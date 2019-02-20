@@ -1,0 +1,28 @@
+﻿@model StockNet.Models.NoticeListViewModel
+@{
+    ViewBag.Title = Model.IsOut ? "曝光台" : "网站公告";
+}
+@section curnav{
+    <div class="block box">
+        <div id="ur_here">
+            <div class="ur_here blank">
+                当前位置: <a href="/">首页</a> <code>&gt;</code> @(Model.IsOut ? "曝光台" : "网站公告")
+            </div>
+        </div>
+    </div>
+}
+<div class="block box info">
+    @if (Model.Notices != null && Model.Notices.Count > 0)
+    {
+        foreach (var note in Model.Notices)
+        {
+            <div class="note">
+                <h2 @Html.Raw(Model.IsOut ? "style='color:red;' title='曝光台'" : "")>@note.Title</h2>
+                <div class="ntm">@note.AddTime.ToString()</div>
+                <div class="notec">
+                    @Html.Raw(note.Notice)
+                </div>
+            </div>
+        }
+    }
+</div>

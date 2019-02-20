@@ -1,0 +1,202 @@
+﻿@model StockNet.Models.ItemListViewModel
+@using StockNet.Helpers;
+@{
+    ViewBag.Title = "库存求购";
+}
+<div class="block clearfix">
+    <div id="pageLeft" class="fl">
+        @if (Model.SubLevelCats != null && Model.SubLevelCats.Count > 0)
+        {
+            <h1 class="mod3tit" style=" color: #fff">子分类</h1>
+            <div class="mod1 mod2 blank" id="historybox">
+                <span class="lb"></span><span class="rb"></span>
+                <div class="cagegoryCon clearfix">                   
+                    @foreach (var cat in Model.SubLevelCats)
+                    {
+                        if (cat.Level == Model.FirstCatLevel)
+                        {
+                            <dl>
+                                <dt><a href="/item/buy?cat=@cat.Id">@cat.Name</a></dt>
+                                <dd class="clearfix">
+                                    @foreach (var cat2 in Model.SubLevelCats)
+                                    {
+                                        if (cat2.Level == Model.FirstCatLevel + 1 && cat2.PId == cat.Id)
+                                        {
+                                            <p><a href="/item/buy?cat=@cat2.Id" class="txtdot">@cat2.Name</a></p>
+                                        }
+                                    }
+                                </dd>
+                            </dl>
+                        }
+                    }
+                </div>
+                <div class="blank"></div>
+            </div>
+        }
+        <h1 class="mod3tit" style=" color: #fff">所有分类</h1>
+        <div class="mod1 mod2 blank" id="historybox">
+            <span class="lb"></span><span class="rb"></span>
+            <div class="cagegoryCon clearfix">
+               @if (Model.TopLevelCats != null && Model.TopLevelCats.Count > 0)
+               {
+                   foreach (var cat in Model.TopLevelCats)
+                   {
+                       if (cat.Level == 0)
+                       {
+                        <dl>
+                            <dt><a href="/item/buy?cat=@cat.Id">@cat.Name</a></dt>
+                            <dd class="clearfix">
+                                @foreach (var cat2 in Model.TopLevelCats)
+                                {
+                                    if (cat2.Level == 1 && cat2.PId == cat.Id)
+                                    {
+                                        <p><a href="/item/buy?cat=@cat2.Id" class="txtdot">@cat2.Name</a></p>
+                                    }
+                                }
+                            </dd>
+                        </dl>
+                       }
+                   }
+               }
+            </div>
+            <div class="blank"></div>
+        </div>
+
+        <h1 class="mod3tit">热门求购</h1>
+        <div class="mod1 mod2 blank" id="topbox">
+            <span class="lb"></span><span class="rb"></span>
+            <ul id="top10">
+                @if (Model.HotStocks != null && Model.HotStocks.Count > 0)
+                {
+                    var idx = 0;
+                    foreach (var hst in Model.HotStocks)
+                    {
+                        idx++;
+                        <li>
+                            <div class="first">
+                                <div class="fl">
+                                    <font style="color:#F00; font-weight:bold">@(idx).</font> <a href="/item/show/@hst.Id" title="@hst.Name">@Html.GetWords(hst.Name, 8)</a>
+                                </div>
+                                <div class="fr"><b class="f1" title="数量：@hst.Qty">@(hst.Price > 0 ? "￥" + hst.Price : hst.PriceDetail ?? "详谈")</b></div>
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+    <div id="pageRight" class="fr">
+        <div class="ur_here blank">
+            当前位置: <a href="/">首页</a>
+        @if (Model.CatPath != null && Model.CatPath.Count > 0)
+        {
+            foreach (var cp in Model.CatPath)
+            {
+                <code>&gt;</code>
+                <a href="/item/buy?cat=@cp.Key">@cp.Value</a>
+            }
+        }
+         <code>&gt;</code> @(!string.IsNullOrEmpty(Request.QueryString["k"]) ? "搜索结果" : "所有求购")
+        </div>		
+        @*<div class="mod1 blank" id="filter">
+            <span class="lt"></span><span class="lb"></span><span class="rt"></span><span class="rb"></span>
+            <h1 class="mod1tit">库存筛选</h1>
+            <div class="mod1con">
+                <div class="screeBox">
+                    <strong>价格：</strong>
+                    <p>全部</p>
+                    <a href="/item?k=@Request.QueryString["k"]&cat=@Model.CatID&pmin=0&pmax=99">0&nbsp;-&nbsp;99</a>&nbsp;
+                    <a href="/item?id=1&price_min=30&price_max=50">100&nbsp;-&nbsp;199</a>&nbsp;
+                    <a href="/item?id=1&price_min=70&price_max=90">200&nbsp;-&nbsp;299</a>&nbsp;
+                    <a href="/item?id=1&price_min=90&price_max=110">300&nbsp;-&nbsp;499</a>&nbsp;
+                    <a href="/item?id=1&price_min=110&price_max=130">500&nbsp;-&nbsp;799</a>&nbsp;
+                    <a href="/item?id=1&price_min=110&price_max=130">800以上</a>&nbsp;
+                </div>
+
+            </div>
+        </div>*@
+
+        <div class="goodsTitle clearfix blank">
+            <span class="fl">库存求购</span>
+            @*<form method="GET" class="sort fr" name="listform">
+                显示方式：
+                <a href="javascript:;" onclick="javascript:display_mode(&#39;list&#39;)"><img src="/images/display_mode_list.gif" alt=""></a>
+                <a href="javascript:;" onclick="javascript:display_mode(&#39;grid&#39;)"><img src="/images/display_mode_grid_act.gif" alt=""></a>&nbsp;&nbsp;
+                                
+                <a href="/item?category=1&display=grid&brand=0&price_min=0&price_max=0&filter_attr=0&page=1&sort=shop_price&order=ASC#goods_list"><img src="/images/shop_price_default.gif" alt="按价格排序"></a>
+                <a href="/item?category=1&display=grid&brand=0&price_min=0&price_max=0&filter_attr=0&page=1&sort=last_update&order=DESC#goods_list"><img src="/images/last_update_default.gif" alt="按更新时间排序"></a>
+                
+            </form>*@
+        </div>
+        <div class="clearfix modContent">
+                <div class="clearfix grid">
+                    @if (Model.CurPageStocks != null && Model.CurPageStocks.Count > 0)
+                    {
+                        foreach (var cpst in Model.CurPageStocks)
+                        {
+                            <div class="goodsbox">
+                                <div class="imgbox"><a href="/item/show/@cpst.Id" title="@cpst.Name"><img src="@(!string.IsNullOrEmpty(cpst.MainPic) && cpst.MainPic.StartsWith("~") ? VirtualPathUtility.ToAbsolute(cpst.MainPic) : cpst.MainPic)"></a></div>
+                                <a href="/item/show/@cpst.Id" title="@cpst.Name">@Html.GetWords(cpst.Name, 25)</a><br>
+                                <b class="f1" title="@cpst.PriceDetail">价格：@(cpst.Price > 0 ? "￥" + cpst.Price : cpst.PriceDetail ?? "详谈")</b> <b class="f1" title="@cpst.QtyDetail">数量：@cpst.Qty</b>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p>暂无求购</p>
+                    }                
+                </div>
+        </div>
+        <div class="pagebar">
+                <div id="pager">
+                    总计 <b>@Model.RecordCount</b>  个求购   
+                     @if (Model.CurPageIndex > 1)
+                     {
+                        <a href="@FuncHelpers.GetItemBuyPagedUrl(Model.CurPageIndex - 1)" class="prev">上一页</a>
+                         if (Model.CurPageIndex <= 6)
+                         {
+                             foreach (var i in FuncHelpers.Range(1, Model.CurPageIndex - 1))
+                             {
+                                <a href="@FuncHelpers.GetItemBuyPagedUrl(i)">@i</a>
+                             }
+                         }
+                         else
+                         {
+                             foreach (var i in FuncHelpers.Range(Model.CurPageIndex - 5, Model.CurPageIndex - 1))
+                             {
+                                <a href="@FuncHelpers.GetItemBuyPagedUrl(i)">@i</a>
+                             }
+                         }
+                     }
+                     @if (Model.PageTotal > 1) { 
+                    <span class="page_now" style="color:red;">@Model.CurPageIndex</span>
+                     }
+                    @if (Model.CurPageIndex < Model.PageTotal)
+                    {
+                        if (Model.CurPageIndex >= 6)
+                        {
+                            foreach (var i in FuncHelpers.Range(Model.CurPageIndex + 1, Model.CurPageIndex + 5))
+                            {
+                                if (i <= Model.PageTotal)
+                                {
+                                    <a href="@FuncHelpers.GetItemBuyPagedUrl(i)">@i</a>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            foreach (var i in FuncHelpers.Range(Model.CurPageIndex + 1, 10))
+                            {
+                                if (i <= Model.PageTotal)
+                                {
+                                    <a href="@FuncHelpers.GetItemBuyPagedUrl(i)">@i</a>
+                                }
+                            }
+                        }
+                        <a href="@FuncHelpers.GetItemBuyPagedUrl(Model.CurPageIndex+1)" class="next">下一页</a>
+                    }
+                </div>
+        </div>
+    </div>
+</div>
+

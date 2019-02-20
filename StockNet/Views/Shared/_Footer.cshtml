@@ -1,0 +1,61 @@
+﻿@using StockNet.Helpers
+<div class="block">
+    <div class="boxhelp mod1 mod2">
+        <span class="lt"></span><span class="lb"></span><span class="rt"></span><span class="rb"></span>
+        <div class="helpTitBg clearfix">
+            <div class="f_l">
+                <dl>
+                    <dt><a href="/account/register">新手上路 </a></dt>
+                    <dd style="background:url(images/tubiao.gif)  no-repeat left center;"><a href="/item">查找库存货源</a></dd>
+                    <dd style="background:url(images/tubiao.gif)  no-repeat left center;"><a href="/account/register">发布库存货源</a></dd>
+                    <dd style="background:url(images/tubiao.gif)  no-repeat left center;"><a href="/info/guide#good">价格优势</a></dd>
+                </dl>
+                <dl>
+                    <dt><a href="/info/guide">服务指南 </a></dt>
+                    <dd style="background:url(images/tubiao.gif)  no-repeat left center;"><a href="/info/guide#pub">如何发库存</a></dd>
+                    <dd style="background:url(images/tubiao.gif)  no-repeat left center;"><a href="/info/guide#buy">如何买库存</a></dd>
+                    <dd style="background:url(images/tubiao.gif)  no-repeat left center;"><a href="/info/guide#fee">费用说明</a></dd>
+                </dl>
+                <dl>
+                    <dt><a href="/manage">会员中心</a></dt>
+                    <dd style="background:url(images/tubiao.gif)  no-repeat left center;"><a href="/home/terms">用户协议</a></dd>
+                    <dd style="background:url(images/tubiao.gif)  no-repeat left center;"><a href="/account/register">会员注册</a></dd>
+                    <dd style="background:url(images/tubiao.gif)  no-repeat left center;"><a href="/account/login">会员登录</a></dd>
+                </dl>
+                <dl>
+                    <dt><a href="/info/agent">加盟代理 </a></dt>
+                    <dd style="background:url(images/tubiao.gif)  no-repeat left center;"><a href="/info/agent#how">如何做代理</a></dd>
+                    <dd style="background:url(images/tubiao.gif)  no-repeat left center;"><a href="/info/agent#area">地区代理</a></dd>
+                    <dd style="background:url(images/tubiao.gif)  no-repeat left center;"><a href="/info/agent#sub">分代理</a></dd>
+                </dl>
+                <dl>
+                    <dt><a href="/home/contact">联系我们 </a></dt>
+                    <dd style="background:url(images/tubiao.gif)  no-repeat left center;"><a href="/home/disclaimer">免责声明</a></dd>
+                    <dd style="background:url(images/tubiao.gif)  no-repeat left center;"><a href="/home/about">关于我们</a></dd>
+                    <dd style="background:url(images/tubiao.gif)  no-repeat left center;"><a href="/home/contact">联系我们</a></dd>
+                </dl>
+            </div>
+            <div class="f_r" style="margin-right:10px;">
+                <dl>
+                    <dd>
+                        <strong>广告与市场合作</strong>
+                        @Html.Raw(FuncHelpers.GetMarketInfo())
+                        @*<strong class="r">15372387977</strong>
+                        <strong class="r">13736803651</strong>
+                        <strong class="r">liu@cycyo.com wang@cycyo.com</strong>*@
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="blank"></div>
+<div class="block tc">
+    <img src="~/Images/ft.gif" style="width:990px;">
+</div>
+<div class="block tc" style="margin-bottom:20px;margin-top: 10px;">    
+    @Html.Raw(FuncHelpers.GetFooterInfo())
+    <p>&copy; 2015 中国尾库网 版权所有，并保留所有权利。</p>
+    <p>鲁ICP备15032673号</p>
+</div>

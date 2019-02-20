@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "服务指南";
+}
+<div class="block clearfix">
+    <div id="articleLeft" class="fl">
+
+        <h1 class="mod2tit" style=" background: red; ">帮助中心</h1><div class="mod1 mod2 blank" id="historybox">
+            <span class="lt"></span><span class="lb"></span><span class="rt"></span><span class="rb"></span>
+            @Html.Partial("_HelpLink")
+        </div>
+    </div>
+    <div id="articleRight" class="fr">
+        <div class="ur_here blank">
+            当前位置: <a href="/">首页</a> <code>&gt;</code> <a href="/info">帮助中心</a> <code>&gt;</code> 服务指南
+        </div>	 <div class="articleBox">
+            <h1 class="articleTit tc">服务指南</h1>
+            <div class="author tc">
+                @Html.Raw(ViewBag.InfoContent)
+            </div>
+            <div style="border-top: #efefef solid 1px;">
+            </div>
+        </div>
+    </div>
+</div>
+

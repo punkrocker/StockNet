@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="Keywords" content="@ViewBag.Keywords">
+    <meta name="Description" content="@ViewBag.Description">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>@ViewBag.Title - 中国尾库网 立志打造中国最大库存货源信息平台</title>
+    <link href="/content/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    @Styles.Render("~/Content/sitecss")
+    @RenderSection("styles", required: false)
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    @Html.Partial("_TopNav")
+    <div class="blank"></div>
+    @RenderSection("curnav", required: false)
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+    <div class="blank"></div>
+    @Html.Partial("_Footer")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

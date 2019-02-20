@@ -1,0 +1,60 @@
+一。关键表字段说明
+st_cat：分类表
+	Name:名称
+	PId：父分类ID
+	Path:分类路径，形式为“,父父类ID,父类ID，本分类ID,”
+	Status：未用
+	Level:层级，无父类为0，有1级父类为1，依次递增
+st_goods：库存货源表
+	MemberId:货主会员ID
+	MainPic:主要图片的Url递增
+	Price：价格，数字
+	PriceDetail:价格描述，可无
+	Qty:数量
+	QtyDetail:数量描述，可无
+	SerialNum:货号，添加时自动生成，形式为“WK+日期yyMMdd+货源ID”
+	Details:库存描述
+	AddUser:添加者的用户ID
+	OverDate:过期日期，未用
+	Status:0 未审核，1 已审核
+	Recommended：是否推荐到首页
+	StoreId:未用
+	ViewCount:浏览数
+	ContactViewCount:联系数，未用
+	CatId:所属分类ID
+	CatPath:所属分类的分类路径
+st_log:日志
+	LogType:日志类型，5 VIP会员改变日志，6 管理员登录日志
+	RelateId：内容相关的ID，可无
+	AddUser:添加者的用户ID，可恶
+st_member:会员表
+	UserId:会员对应的用户ID
+	Level:会员级别，普通会员或VIP会员
+	RealName:姓名
+	Remark:备注，可无
+	HadVerify：信息是否已验证
+	VipOverDate：VIP会员过期日期，VIP必须由此日期
+st_notice：公告和曝光台表
+	OverTime:过期日期，未用
+	NoticeType：公告类型，0 普通公告，1 曝光台公告
+st_pic：库存货源图片表
+	PicType:图片类型，5 库存货源相关图片，
+	RelateId：相关ID，如库存货源ID
+	Remark:未用
+st_setting：系统设置表
+	Name:名字表，英文，前面加st_
+	Val:设置内容
+st_store：店面表，未用
+st_user：用户表
+	Name:姓名
+	LoginName：登录名
+	LoginPass：密码，SHA1加密
+	RoleId：角色ID，-1为超管，0为会员，>0为管理员
+	Sex:性别，true为女
+	Status:状态，0 正常，9 锁定禁止登陆
+	Email:邮箱
+st_role：角色表
+	Perms：权限，形式为“权限名,权限名”
+二。有关注册
+管理员和会员都用了User表存储登录名和密码
+会员又使用了Member表存储联系方式等信息，Member表有userid

@@ -1,0 +1,79 @@
+﻿@model StockNet.Areas.Admin.Models.SettingIndexViewModel
+@{
+    ViewBag.Title = "系统设置";
+
+    ViewBag.Breadcrumb = new Breadcrumb(new Crumb[] {
+        new Crumb("首页", "/Admin", "fa-dashboard"),
+        new Crumb("系统设置")
+    });
+}
+@helper GetSettingValue(string name,string defaultVal) { 
+    var val = defaultVal;
+    if (Model.Settings != null && Model.Settings.Count > 0)
+    {
+        foreach (var st in Model.Settings)
+        {
+            if (st.Key == name)
+            {
+                val = st.Value;
+            }
+        }
+    }
+    @val   
+}
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">系统设置</h3>
+            </div>
+            <form id="fs-form" action="~/Admin/Setting" method="post">
+                @Html.AntiForgeryToken()
+                <div class="box-body">  
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <ul>
+                                    <li><a href="~/Admin/Setting/Item?k=about&n=关于我们">关于我们</a></li>
+                                    <li><a href="~/Admin/Setting/Item?k=contact&n=联系我们">联系我们</a></li>
+                                    <li><a href="~/Admin/Setting/Item?k=disclaimer&n=免责声明">免责声明</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-3">
+                                <ul>
+                                    <li><a href="~/Admin/Setting/Item?k=guide&n=服务指南">服务指南</a></li>
+                                    <li><a href="~/Admin/Setting/Item?k=agent&n=加盟代理">加盟代理</a></li>
+                                    <li><a href="~/Admin/Setting/Item?k=terms&n=用户协议">用户协议</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-3">
+                                <ul>
+                                    <li><a href="~/Admin/Setting/Item?k=member&n=会员中心">会员中心</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>                  
+                    <div class="form-group">
+                        <label for="st_sitename">站点名称</label>
+                        <input id="st_sitename" name="st_sitename" type="text" value="@GetSettingValue("st_sitename", "中国尾库网")" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="st_footerinfo">底部信息</label>可多行
+                        <textarea id="st_footerinfo" name="st_footerinfo" rows="3" class="form-control">@GetSettingValue("st_footerinfo", "")</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="st_marketinfo">首页广告与市场合作信息</label>可多行
+                        <textarea id="st_marketinfo" name="st_marketinfo" rows="3" class="form-control">@GetSettingValue("st_marketinfo", "")</textarea>
+                    </div>
+                    @*<div class="form-group">
+                        <label for="st_footerinfo">广告图片</label>
+                        
+                    </div>*@                   
+                </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>  
+</div>

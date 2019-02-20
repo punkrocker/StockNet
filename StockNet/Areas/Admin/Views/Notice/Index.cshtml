@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "公告管理";
+
+    ViewBag.Breadcrumb = new Breadcrumb(new Crumb[] {
+        new Crumb("首页", "/Admin", "fa-dashboard"),
+        new Crumb("公告管理")
+    });
+}
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">公告</h3>
+                <div class="box-tools pull-right">
+                    <a class="btn btn-primary fs-add" href="~/Admin/Notice/Add">添加公告</a>
+                </div>
+            </div>
+            <div class="box-body">
+                <table id="tbl_data" class="table table-bordered table-striped  table-hover">
+                    <thead>
+                        <tr>
+                            <th>标题</th>
+                            <th>类型</th>
+                            <th>添加时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                </table>
+                <form id="__AjaxAntiForgeryForm" action="#" method="post">
+                    @Html.AntiForgeryToken()
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(function () {
+            var tbl = $("#tbl_data").dataTable({
+                bSort: false,
+                bProcessing: true,
+                aoColumns: [null,null,null,
+                    { mData: function (source, type, val) {
+                        return '<a href="/Admin/Notice/Edit/' + source[3] + '"><i class="fa fa-edit"></i>编辑公告</a>&nbsp;&nbsp;' +
+                            '<a href="#" class="fs-del" data-id="' + source[3] + '"><i class="fa fa-remove"></i>删除</a>';
+                    }
+                }],
+                bServerSide: true,                
+                sServerMethod :'POST',
+                sAjaxSource: '/Admin/Notice/List',
+                fnDrawCallback: function (oSettings) {
+                    $("#tbl_data a.fs-del").click(function () {
+                        if (confirm("确定要删除此公告么？")) {
+                            var id = $(this).data("id");
+                            $.post("/Admin/Notice/Del", { id: id, __RequestVerificationToken: $('#__AjaxAntiForgeryForm input[name="__RequestVerificationToken"]').val() },
+                            function (res) {
+                                if (res == "ok") {
+                                    window.location.reload();
+                                } else {
+                                    alert(res);
+                                }
+                            });
+                        }
+                    });
+                },
+                oLanguage: {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+                }
+            });
+        });
+    </script>
+}

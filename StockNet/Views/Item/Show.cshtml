@@ -1,0 +1,225 @@
+﻿@model StockNet.Models.ItemShowViewModel
+@using StockNet.Helpers
+@{
+    ViewBag.Title = "库存货源信息";
+}
+<div class="block clearfix">
+    <div id="pageLeft" class="fl">
+        @if (Model.SubLevelCats != null && Model.SubLevelCats.Count > 0)
+        {
+            <h1 class="mod3tit" style=" color: #fff">子分类</h1>
+            <div class="mod1 mod2 blank" id="historybox">
+                <span class="lb"></span><span class="rb"></span>
+                <div class="cagegoryCon clearfix">
+                    @foreach (var cat in Model.SubLevelCats)
+                    {
+                        if (cat.Level == Model.FirstCatLevel)
+                        {
+                            <dl>
+                                <dt><a href="/item?cat=@cat.Id">@cat.Name</a></dt>
+                                <dd class="clearfix">
+                                    @foreach (var cat2 in Model.SubLevelCats)
+                                    {
+                                        if (cat2.Level == Model.FirstCatLevel + 1 && cat2.PId == cat.Id)
+                                        {
+                                            <p><a href="/item?cat=@cat2.Id" class="txtdot">@cat2.Name</a></p>
+                                        }
+                                    }
+                                </dd>
+                            </dl>
+                        }
+                    }
+                </div>
+                <div class="blank"></div>
+            </div>
+        }
+        <h1 class="mod3tit" style=" color: #fff">所有分类</h1>
+        <div class="mod1 mod2 blank" id="historybox">
+            <span class="lb"></span><span class="rb"></span>
+            <div class="cagegoryCon clearfix">
+                @if (Model.TopLevelCats != null && Model.TopLevelCats.Count > 0)
+                {
+                    foreach (var cat in Model.TopLevelCats)
+                    {
+                        if (cat.Level == 0)
+                        {
+                            <dl>
+                                <dt><a href="/item?cat=@cat.Id">@cat.Name</a></dt>
+                                <dd class="clearfix">
+                                    @foreach (var cat2 in Model.TopLevelCats)
+                                    {
+                                        if (cat2.Level == 1 && cat2.PId == cat.Id)
+                                        {
+                                            <p><a href="/item?cat=@cat2.Id" class="txtdot">@cat2.Name</a></p>
+                                        }
+                                    }
+                                </dd>
+                            </dl>
+                        }
+                    }
+                }
+            </div>
+            <div class="blank"></div>
+        </div>
+
+        <div class="blank"></div>
+        <h1 class="mod3tit">热门货源</h1>
+        <div class="mod1 mod2 blank" id="topbox">
+            <span class="lb"></span><span class="rb"></span>
+            <ul id="top10">
+                @if (Model.HotStocks != null && Model.HotStocks.Count > 0)
+                {
+                    var idx = 0;
+                    foreach (var hst in Model.HotStocks)
+                    {
+                        idx++;
+                        <li>
+                            <div class="first">
+                                <div class="fl">
+                                    <font style="color:#F00; font-weight:bold">@(idx).</font> <a href="/item/show/@hst.Id" title="@hst.Name">@Html.GetWords(hst.Name, 8)</a>
+                                </div>
+                                <div class="fr"><b class="f1" title="数量：@hst.Qty">@(hst.Price > 0 ? "￥" + hst.Price : hst.PriceDetail ?? "详谈")</b></div>
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+    <div id="pageRight" class="fr">
+        <div class="ur_here blank">
+            当前位置: <a href="/">首页</a>
+        @if (Model.CatPath != null && Model.CatPath.Count > 0)
+        {
+            foreach (var cp in Model.CatPath)
+            {
+                <code>&gt;</code>
+                <a href="/item?cat=@cp.Key">@cp.Value</a>                
+            }
+        }
+        <code>&gt;</code> @Model.Stock.Name       
+        </div>  <div class="clearfix">
+
+            <div class="goodsimgbox fl">
+                <div id="focuscont">
+                    <a style="position: relative; display: block; outline: 0px; text-decoration: none; width: 298px;" href="@Href(Model.Stock.MainPic)" id="zoom1" class="MagicZoom MagicThumb" title="@Model.Stock.Name">
+                        <img src="@Href(Model.Stock.MainPic)" alt="@Model.Stock.Name" width="298px" height="298px" style="border:1px solid #d2d0d0" id="sim879612">
+
+                        <div class="MagicZoomBigImageCont" style="width: 230px; height: 249px; overflow: hidden; z-index: 100; visibility: hidden; position: absolute; top: -10000px; left: 315px;"><div class="MagicZoomHeader" id="MagicZoomHeaderbc879612" style="position: relative; z-index: 10; left: 0px; top: 0px; padding: 3px;">@Model.Stock.Name</div><div style="overflow: hidden;"><img id="" src="@Href(Model.Stock.MainPic)" style="position: relative; border-width: 0px; padding: 0px;"></div><div style="color: rgb(255, 0, 0); font-size: 10px; font-weight: bold; font-family: Tahoma; position: absolute; width: 100%; text-align: center; left: 0px; top: 229px;"></div></div><div class="MagicZoomPup" style="z-index: 10; visibility: hidden; position: absolute; opacity: 0.05; width: 98px; height: 98px;"></div>
+                    </a>
+                </div>
+                <div class="picture" id="imglist">
+                    <a href="@Href(Model.Stock.MainPic)" rel="zoom1" rev="@Href(Model.Stock.MainPic)" title="" style="outline: 0px;">
+                        <img src="@Href(Model.Stock.MainPic)" class="onbg">
+                    </a>
+                    @if (Model.StockPics != null && Model.StockPics.Count > 0)
+                    {
+                        foreach (var spic in Model.StockPics)
+                        {
+                            <a href="@Href(spic.PicUrl)" rel="zoom1" rev="@Href(spic.PicUrl)" title="" style="outline: 0px;">
+                                <img src="@Href(spic.PicUrl)">
+                            </a>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="goodstxtbox fr">
+                <h4 class="goodName">
+                   <b>@(Model.Stock.IsBrandGoods==true?"品牌":"")@(Model.Stock.GoodsType==1?"库存求购":"库存出售")</b> @Model.Stock.Name
+                </h4>
+                <div>
+                    <p class="goodsInfo">
+                        @if (!string.IsNullOrEmpty(Model.Stock.SerialNum)) {
+                        <span>货号：@Model.Stock.SerialNum			</span>
+                        }
+                        <span>			数量： @Model.Stock.Qty @(!string.IsNullOrEmpty(Model.Stock.QtyDetail) ? "【" + Model.Stock.QtyDetail +"】": "")			</span>
+
+                        <span>			价格：@(Model.Stock.Price > 0 ? "￥" + Model.Stock.Price : Model.Stock.PriceDetail ?? "详谈") 	</span>
+                        <span>  区域： @Model.Stock.GoodsArea @if(Model.Stock.IsBrandGoods==true){<b>品牌：@Model.Stock.BrandName</b>}</span>
+
+                        @*@if (Model.Member != null && Model.Member.Id > 0)
+                        {
+                            <span>货主级别：@(Model.Member.Level != "普通会员" && Model.Member.VipOverDate.HasValue && Model.Member.VipOverDate.Value > DateTime.Now ? Model.Member.Level : "普通会员")		</span>
+                        }*@
+                        
+                        <span>发布时间：@Model.Stock.AddTime.Value.ToString("yyyy年MM月dd日")			</span>
+                    </p>
+
+                    <div class="Goodpromotion" style="float:left; width:450px; border-left:none; border-right:none">
+                        @*<font class="goodspice">价格：<font class="price" style="font-size:20px;">￥99元</font></font><br />*@
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            if (Model.IsVip)
+                            {
+                                if (Model.Stock.Status > 0 && (!string.IsNullOrEmpty(Model.Stock.RealName) || !string.IsNullOrEmpty(Model.Stock.Mobile)))
+                                { 
+                                <p>
+                                    货主联系方式：<br />@*Model.Member != null && Model.Member.Id > 0*@
+                                    @if (!string.IsNullOrEmpty(Model.Stock.RealName))
+                                    {<span>姓名:@Model.Stock.RealName</span><br />}
+                                    @if (!string.IsNullOrEmpty(Model.Stock.Mobile))
+                                    {<span>手机:@Model.Stock.Mobile</span><br />}
+                                    @if (!string.IsNullOrEmpty(Model.Stock.Tel))
+                                    {<span>固话:@Model.Stock.Tel</span><br />}
+                                    @if (!string.IsNullOrEmpty(Model.Stock.Wechat))
+                                    {<span>微信:@Model.Stock.Wechat</span><br />}
+                                    @if (!string.IsNullOrEmpty(Model.Stock.Addr))
+                                    {<span>地址:@Model.Stock.Addr</span>}
+                                </p>
+                                }
+                                else
+                                {
+                                    <p>
+                                        你好,该库存货源未审核或者没有货主信息<br />
+                                        请联系管理员！
+                                    </p>
+                                }
+                            }
+                            else
+                            {
+                                <p>
+                                    要联系货主，请先加入VIP会员！<br />
+                                    <a href="/manage/vip" class="btn btn-warning">加入VIP会员</a><br />
+                                    VIP会员，更好找到精准客源！
+                                </p>
+                            }
+                        }
+                        else
+                        {
+                            <p>
+                                您好，朋友！<br />
+                                要联系货主，请先登录！<br />
+                                <a href="/account/login" class="btn btn-warning">会员登录</a><br />
+                                如果您第一次来，请先注册会员！<br />
+                                <a href="/account/register" class="btn btn-warning">免费注册</a><br />
+                                加入VIP会员，找到精准客源<br />
+
+                                <a href="/account/login?returnUrl=/item/show/@Model.Stock.Id" class="btn btn-primary"><i class="fa fa-phone"></i> 我要联系货主</a>
+                            </p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="infotit clearfix">
+            <h2 style="cursor: pointer;"><span class="l"></span><span class="r"></span>库存描述</h2>
+        </div>
+        <div class="tagcontent" style="border:1px solid #FFF">
+            @if(Model.Stock.Status>0){@Html.Raw(Model.Stock.Details)}else{<p>未审核</p>}
+        </div>
+    </div>
+</div>
+@section Scripts {
+<script type="text/javascript" src="~/Scripts/mzp-packed-me.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#imglist a").hover(function () {
+                var self = $(this);
+                $("#focuscont a img").attr("src", self.attr("rev"));
+                self.find("img").addClass("onbg");
+                self.siblings().find("img").removeClass("onbg");
+            });
+        });
+        
+    </script>
+}

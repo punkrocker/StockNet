@@ -1,0 +1,76 @@
+﻿@model StockNet.Areas.Admin.Models.UserAddEditViewModel
+@{
+    ViewBag.Title = "添加用户";
+
+    ViewBag.Breadcrumb = new Breadcrumb(new Crumb[] {
+        new Crumb("首页", "/Admin", "fa-dashboard"),
+        new Crumb("用户管理","/Admin/User","fa-user"),
+        new Crumb("添加用户")
+    });
+}
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <form role="form" method="post" action="~/Admin/User/Add" autocomplete="off">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary()
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="rolename">用户名：</label>
+                        <input type="text" class="form-control" id="username" name="username" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">密  码：</label>
+                        <input type="password" class="form-control" id="userpass" name="userpass" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label>姓名：</label>
+                        <input type="text" class="form-control" id="realname" name="realname" />
+                    </div>
+                    <div class="form-group">
+                        <label>性别：</label>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="usersex" id="sex1" value="0" checked>
+                                男
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="usersex" id="sex2" value="1">
+                                女
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>邮箱：</label>
+                        <input type="text" class="form-control" id="email" name="email" />
+                    </div>
+                    <div class="form-group">
+                        <label>角色：</label>
+                        @if (Model.Roles != null && Model.Roles.Count > 0)
+                        {
+                            foreach (var role in Model.Roles)
+                            {
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="userrole" id="role_@role.Id" value="@role.Id">
+                                        @role.Name
+                                    </label>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <a target="_blank" href="~/Admin/Role/Add">添加角色</a>
+                        }
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="reset" class="btn btn-default pull-left">重置</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
